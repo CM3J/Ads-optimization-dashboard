@@ -8,12 +8,9 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <!-- Firebase compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
   <script>
     firebase.initializeApp({
       apiKey: "AIzaSyB60SW3dX1_gkrEFO57IVxhK6Lleqw8W1Y",
@@ -29,32 +26,36 @@
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
     const { useState, useEffect } = React;
 
     // --- Icons ---
     const Svg = ({ d, size = 16 }) => (
       <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         {[].concat(d).map((p, i) => <path key={i} d={p} />)}
       </svg>
     );
-    const PlusIcon    = () => <Svg d={["M12 5v14","M5 12h14"]} />;
-    const BackIcon    = () => <Svg d={["M19 12H5","M12 19l-7-7 7-7"]} />;
-    const CalIcon     = () => <Svg d={["M8 2v4","M16 2v4","M3 10h18","M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z"]} />;
-    const TrashIcon   = () => <Svg d={["M3 6h18","M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6","M10 11v6","M14 11v6","M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"]} />;
-    const ClockIcon   = () => <Svg d={["M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20","M12 6v6l4 2"]} />;
-    const CheckIcon   = () => <Svg d={["M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20","M9 12l2 2 4-4"]} size={22} />;
-    const RingIcon    = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/></svg>;
-    const AlertIcon   = () => <Svg d={["M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20","M12 8v4","M12 16h.01"]} size={40} />;
-    const NotesIcon   = () => <Svg d={["M3 6h18","M3 12h12","M3 18h15"]} />;
-    const CalDaysIcon = () => <Svg d={["M8 2v4","M16 2v4","M3 10h18","M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z","M8 14h.01","M12 14h.01","M16 14h.01","M8 18h.01","M12 18h.01"]} />;
+    const PlusIcon     = () => <Svg d={["M12 5v14","M5 12h14"]} />;
+    const BackIcon     = () => <Svg d={["M19 12H5","M12 19l-7-7 7-7"]} />;
+    const CalIcon      = () => <Svg d={["M8 2v4","M16 2v4","M3 10h18","M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z"]} />;
+    const TrashIcon    = () => <Svg d={["M3 6h18","M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6","M10 11v6","M14 11v6","M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"]} />;
+    const ClockIcon    = () => <Svg d={["M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20","M12 6v6l4 2"]} />;
+    const CheckIcon    = () => <Svg d={["M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20","M9 12l2 2 4-4"]} size={22} />;
+    const RingIcon     = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/></svg>;
+    const AlertIcon    = () => <Svg d={["M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20","M12 8v4","M12 16h.01"]} size={40} />;
+    const NotesIcon    = () => <Svg d={["M3 6h18","M3 12h12","M3 18h15"]} />;
+    const CalDaysIcon  = () => <Svg d={["M8 2v4","M16 2v4","M3 10h18","M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z","M8 14h.01","M12 14h.01","M16 14h.01","M8 18h.01","M12 18h.01"]} />;
+    const SettingsIcon = () => <Svg d={["M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20","M12 8v4","M12 16h.01"]} />;
+    const ListIcon     = () => <Svg d={["M9 6h11","M9 12h11","M9 18h11","M4 6h.01","M4 12h.01","M4 18h.01"]} />;
+    const XIcon        = () => <Svg d={["M18 6 6 18","M6 6l12 12"]} />;
 
     // --- Constants ---
     const PRIORITIES = ["Not urgent", "Important", "Next Step", "Ongoing"];
     const CATS = ["Google Ads", "META Ads", "LinkedIn Ads"];
-    const TASKS = {
+
+    // Default tasks used when creating new clients
+    const DEFAULT_TASKS = {
       "Google Ads": [
         "Pause All old Promo Assets (comparing with offers pages on sites)",
         "Look at offer page and add promo assets for existing promos",
@@ -82,17 +83,25 @@
       ]
     };
 
-    const makeChecklist = () => {
+    const makeChecklist = (tasks) => {
+      const src = tasks || DEFAULT_TASKS;
       const out = {};
-      for (const [cat, tasks] of Object.entries(TASKS)) {
-        out[cat] = tasks.map(text => ({ id: crypto.randomUUID(), text, completed: false, priority: "Not urgent" }));
+      for (const [cat, list] of Object.entries(src)) {
+        out[cat] = list.map(text => ({ id: crypto.randomUUID(), text, completed: false, priority: "Not urgent" }));
       }
       return out;
     };
 
-    const getStatus = (iso) => {
-      if (!iso) return { dot: 'bg-red-500', text: 'text-red-600', bg: 'bg-red-50', label: 'Overdue (> 12w)' };
-      const w = (Date.now() - new Date(iso).getTime()) / 604800000;
+    // Returns the card status considering BOTH lastUpdated age AND nextUpdate overdue
+    const getCardStatus = (lastUpdated, nextUpdate) => {
+      // If next update date is set and overdue — always red
+      if (nextUpdate) {
+        const overdue = new Date(nextUpdate) < new Date();
+        if (overdue) return { dot: 'bg-red-500', text: 'text-red-600', bg: 'bg-red-50', label: 'Update Overdue!' };
+      }
+      // Otherwise fall back to lastUpdated age
+      if (!lastUpdated) return { dot: 'bg-red-500', text: 'text-red-600', bg: 'bg-red-50', label: 'Overdue (> 12w)' };
+      const w = (Date.now() - new Date(lastUpdated).getTime()) / 604800000;
       if (w < 6)  return { dot: 'bg-green-500',  text: 'text-green-600',  bg: 'bg-green-50',  label: 'Healthy (< 6w)' };
       if (w < 12) return { dot: 'bg-orange-500', text: 'text-orange-600', bg: 'bg-orange-50', label: 'Warning (6-12w)' };
       return { dot: 'bg-red-500', text: 'text-red-600', bg: 'bg-red-50', label: 'Action Required (> 12w)' };
@@ -102,20 +111,24 @@
       ? new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
       : "Never";
 
-    // Simple flat collection — no nested intermediate documents needed
-    const col = () => db.collection('ad-dashboard-clients');
+    const col      = () => db.collection('ad-dashboard-clients');
+    const tmplDoc  = () => db.collection('ad-dashboard-config').doc('checklist-template');
 
     // --- App ---
     function App() {
-      const [user,     setUser]     = useState(null);
-      const [clients,  setClients]  = useState([]);
-      const [selId,    setSelId]    = useState(null);
-      const [adding,   setAdding]   = useState(false);
-      const [newName,  setNewName]  = useState('');
-      const [newNotes, setNewNotes] = useState('');
-      const [newNext,  setNewNext]  = useState('');
-      const [loading,  setLoading]  = useState(true);
-      const [toast,    setToast]    = useState(null); // { msg, type: 'error'|'success' }
+      const [user,        setUser]        = useState(null);
+      const [clients,     setClients]     = useState([]);
+      const [selId,       setSelId]       = useState(null);
+      const [adding,      setAdding]      = useState(false);
+      const [newName,     setNewName]     = useState('');
+      const [newNotes,    setNewNotes]    = useState('');
+      const [newNext,     setNewNext]     = useState('');
+      const [loading,     setLoading]     = useState(true);
+      const [toast,       setToast]       = useState(null);
+      // Template editor
+      const [showTmpl,    setShowTmpl]    = useState(false);
+      const [tmplTasks,   setTmplTasks]   = useState(DEFAULT_TASKS);
+      const [newTaskText, setNewTaskText] = useState({ "Google Ads": "", "META Ads": "", "LinkedIn Ads": "" });
 
       const showToast = (msg, type = 'error') => {
         setToast({ msg, type });
@@ -125,13 +138,10 @@
       // Auth
       useEffect(() => {
         auth.signInAnonymously().catch(err => showToast('Auth failed: ' + err.message));
-        return auth.onAuthStateChanged(u => {
-          setUser(u);
-          if (!u) setLoading(false);
-        });
+        return auth.onAuthStateChanged(u => { setUser(u); if (!u) setLoading(false); });
       }, []);
 
-      // Fetch
+      // Load clients
       useEffect(() => {
         if (!user) return;
         return col().onSnapshot(snap => {
@@ -142,41 +152,59 @@
           );
           setClients(list);
           setLoading(false);
-        }, err => {
-          showToast('Failed to load clients: ' + err.message);
-          setLoading(false);
-        });
+        }, err => { showToast('Failed to load: ' + err.message); setLoading(false); });
       }, [user]);
+
+      // Load saved template
+      useEffect(() => {
+        if (!user) return;
+        tmplDoc().get().then(doc => {
+          if (doc.exists) setTmplTasks(doc.data().tasks);
+        }).catch(() => {});
+      }, [user]);
+
+      const saveTemplate = async (updated) => {
+        try {
+          await tmplDoc().set({ tasks: updated });
+          setTmplTasks(updated);
+          showToast('Template saved!', 'success');
+        } catch (err) { showToast('Save failed: ' + err.message); }
+      };
+
+      const addTemplateTask = (cat) => {
+        const text = newTaskText[cat]?.trim();
+        if (!text) return;
+        const updated = { ...tmplTasks, [cat]: [...(tmplTasks[cat] || []), text] };
+        setNewTaskText(prev => ({ ...prev, [cat]: '' }));
+        saveTemplate(updated);
+      };
+
+      const removeTemplateTask = (cat, idx) => {
+        const updated = { ...tmplTasks, [cat]: tmplTasks[cat].filter((_, i) => i !== idx) };
+        saveTemplate(updated);
+      };
 
       const addClient = async (e) => {
         e.preventDefault();
         if (!newName.trim()) return;
         try {
           await col().add({
-            name: newName.trim(),
-            notes: newNotes.trim(),
-            nextUpdate: newNext,
-            lastUpdated: new Date().toISOString(),
-            createdAt: new Date().toISOString(),
-            checklist: makeChecklist()
+            name: newName.trim(), notes: newNotes.trim(), nextUpdate: newNext,
+            lastUpdated: new Date().toISOString(), createdAt: new Date().toISOString(),
+            checklist: makeChecklist(tmplTasks)
           });
           setNewName(''); setNewNotes(''); setNewNext(''); setAdding(false);
           showToast('Client saved!', 'success');
-        } catch (err) {
-          showToast('Could not save client: ' + err.message);
-        }
+        } catch (err) { showToast('Could not save client: ' + err.message); }
       };
 
       const deleteClient = async (id, e) => {
         e.stopPropagation();
         if (!confirm("Delete this client? This cannot be undone.")) return;
-        try {
-          await col().doc(id).delete();
-          if (selId === id) setSelId(null);
-        } catch (err) { showToast('Delete failed: ' + err.message); }
+        try { await col().doc(id).delete(); if (selId === id) setSelId(null); }
+        catch (err) { showToast('Delete failed: ' + err.message); }
       };
 
-      // Use set+merge so it works whether the doc exists or not
       const saveChecklist = async (id, cl) => {
         const safe = Object.fromEntries(Object.entries(cl).map(([cat, tasks]) => [cat, tasks.map(t => ({ ...t }))]));
         try { await col().doc(id).set({ checklist: safe }, { merge: true }); }
@@ -198,8 +226,7 @@
           <style>{`@keyframes spin { to { transform:rotate(360deg); } }`}</style>
           <div style={{ animation: 'spin 1s linear infinite' }}>
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round">
-              <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
-              <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+              <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
               <path d="M3 16H8"/><path d="M16 8h5"/>
             </svg>
           </div>
@@ -211,10 +238,11 @@
 
       return (
         <div className="min-h-screen bg-slate-50 text-slate-800">
+          <style>{`@keyframes spin { to { transform:rotate(360deg); } }`}</style>
 
-          {/* Toast notification */}
+          {/* Toast */}
           {toast && (
-            <div className={`fixed top-4 right-4 z-50 px-5 py-3 rounded-lg shadow-lg text-white text-sm font-medium transition-all ${toast.type === 'success' ? 'bg-green-600' : 'bg-red-600'}`}>
+            <div className={`fixed top-4 right-4 z-50 px-5 py-3 rounded-lg shadow-lg text-white text-sm font-medium ${toast.type === 'success' ? 'bg-green-600' : 'bg-red-600'}`}>
               {toast.msg}
             </div>
           )}
@@ -231,16 +259,83 @@
                 <h1 className="text-xl font-bold">{selId ? sel?.name : "Ad Accounts Dashboard"}</h1>
               </div>
               {!selId && (
-                <button onClick={() => setAdding(true)} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
-                  <PlusIcon /> Add Client
-                </button>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => setShowTmpl(true)}
+                    className="flex items-center gap-2 border border-slate-300 hover:bg-slate-50 text-slate-600 px-4 py-2 rounded-lg font-medium">
+                    <ListIcon /> Edit Checklist Template
+                  </button>
+                  <button onClick={() => setAdding(true)}
+                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
+                    <PlusIcon /> Add Client
+                  </button>
+                </div>
               )}
             </div>
           </header>
 
+          {/* ── Template Editor Modal ── */}
+          {showTmpl && (
+            <div className="fixed inset-0 bg-black bg-opacity-40 z-40 flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-screen overflow-y-auto">
+                <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 sticky top-0 bg-white">
+                  <div>
+                    <h2 className="text-lg font-bold">Edit Checklist Template</h2>
+                    <p className="text-sm text-slate-500 mt-0.5">Changes apply to all new clients you add</p>
+                  </div>
+                  <button onClick={() => setShowTmpl(false)} className="p-2 hover:bg-slate-100 rounded-full text-slate-500">
+                    <XIcon />
+                  </button>
+                </div>
+
+                <div className="p-6 space-y-8">
+                  {CATS.map(cat => (
+                    <div key={cat}>
+                      <h3 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-blue-500 inline-block"></span>{cat}
+                      </h3>
+                      <div className="space-y-2 mb-3">
+                        {(tmplTasks[cat] || []).map((task, idx) => (
+                          <div key={idx} className="flex items-center gap-3 bg-slate-50 px-4 py-2.5 rounded-lg border border-slate-200 group">
+                            <span className="flex-1 text-sm text-slate-700">{task}</span>
+                            <button onClick={() => removeTemplateTask(cat, idx)}
+                              className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 transition-all">
+                              <TrashIcon />
+                            </button>
+                          </div>
+                        ))}
+                        {(tmplTasks[cat] || []).length === 0 && (
+                          <p className="text-sm text-slate-400 italic px-1">No tasks — add one below</p>
+                        )}
+                      </div>
+                      {/* Add task row */}
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder={`Add a task to ${cat}...`}
+                          value={newTaskText[cat] || ''}
+                          onChange={e => setNewTaskText(prev => ({ ...prev, [cat]: e.target.value }))}
+                          onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTemplateTask(cat))}
+                          className="flex-1 px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <button onClick={() => addTemplateTask(cat)}
+                          className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="px-6 py-4 border-t border-slate-200 bg-slate-50 rounded-b-2xl">
+                  <p className="text-xs text-slate-400">Existing client checklists are not affected — only new clients will use this template.</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <main className="max-w-6xl mx-auto p-6">
 
-            {/* Add form */}
+            {/* Add Client Form */}
             {adding && !selId && (
               <div className="mb-8 p-6 bg-white rounded-xl shadow-sm border border-slate-200">
                 <h2 className="text-lg font-semibold mb-4">Add New Ad Account</h2>
@@ -250,10 +345,14 @@
                       onChange={e => setNewName(e.target.value)}
                       className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       autoFocus required />
-                    <div className="flex items-center gap-2 px-4 py-2 border border-slate-300 rounded-lg text-slate-400">
-                      <CalDaysIcon />
-                      <input type="date" value={newNext} onChange={e => setNewNext(e.target.value)}
-                        className="flex-1 bg-transparent focus:outline-none text-slate-700" />
+                    <div className="flex flex-col gap-1">
+                      <label className="text-xs text-slate-500 font-medium px-1">Next update due date</label>
+                      <div className="flex items-center gap-2 px-4 py-2 border border-slate-300 rounded-lg text-slate-400">
+                        <CalDaysIcon />
+                        <input type="date" value={newNext} onChange={e => setNewNext(e.target.value)}
+                          className="flex-1 bg-transparent focus:outline-none text-slate-700" />
+                      </div>
+                      <p className="text-xs text-slate-400 px-1">Card turns red if this date passes</p>
                     </div>
                   </div>
                   <textarea placeholder="Client Notes (Optional)" value={newNotes}
@@ -269,7 +368,7 @@
               </div>
             )}
 
-            {/* Dashboard grid */}
+            {/* Dashboard Grid */}
             {!selId && (
               clients.length === 0 && !adding ? (
                 <div className="text-center py-20">
@@ -280,13 +379,14 @@
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {clients.map(c => {
-                    const s = getStatus(c.lastUpdated);
+                    const s = getCardStatus(c.lastUpdated, c.nextUpdate);
                     let total = 0, done = 0;
                     Object.values(c.checklist || {}).forEach(ts => ts.forEach(t => { total++; if (t.completed) done++; }));
                     const pct = total > 0 ? Math.round(done / total * 100) : 0;
+                    const nextOverdue = c.nextUpdate && new Date(c.nextUpdate) < new Date();
                     return (
                       <div key={c.id} onClick={() => setSelId(c.id)}
-                        className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md hover:border-slate-300 transition-all cursor-pointer group flex flex-col">
+                        className={`bg-white rounded-xl p-6 shadow-sm border hover:shadow-md transition-all cursor-pointer group flex flex-col ${nextOverdue ? 'border-red-300' : 'border-slate-200 hover:border-slate-300'}`}>
                         <div className="flex justify-between items-start mb-4">
                           <h2 className="text-lg font-bold pr-4">{c.name}</h2>
                           <button onClick={e => deleteClient(c.id, e)}
@@ -302,9 +402,13 @@
                             <span className="flex items-center gap-1.5"><ClockIcon /> {fmt(c.lastUpdated)}</span>
                             <span className="font-medium">{pct}% Done</span>
                           </div>
+                          {/* Next update badge — red if overdue */}
                           {c.nextUpdate && (
-                            <div className="flex items-center gap-2 text-sm text-blue-600 bg-blue-50 px-3 py-2 rounded-lg border border-blue-100">
-                              <CalDaysIcon /><span className="font-medium ml-1">Next: {fmt(c.nextUpdate)}</span>
+                            <div className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg border ${nextOverdue ? 'text-red-600 bg-red-50 border-red-200' : 'text-blue-600 bg-blue-50 border-blue-100'}`}>
+                              <CalDaysIcon />
+                              <span className="font-medium">
+                                {nextOverdue ? 'Overdue: ' : 'Next: '}{fmt(c.nextUpdate)}
+                              </span>
                             </div>
                           )}
                           <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
@@ -318,7 +422,7 @@
               )
             )}
 
-            {/* Client detail */}
+            {/* Client Detail View */}
             {selId && sel && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="bg-slate-50 border-b border-slate-200 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -326,15 +430,18 @@
                     <div className="flex items-center gap-3">
                       <span className="text-sm text-slate-500">Last updated:</span>
                       <span className="text-sm font-bold">{fmt(sel.lastUpdated)}</span>
-                      <span className={`w-2.5 h-2.5 rounded-full inline-block ${getStatus(sel.lastUpdated).dot}`} />
+                      <span className={`w-2.5 h-2.5 rounded-full inline-block ${getCardStatus(sel.lastUpdated, sel.nextUpdate).dot}`} />
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-sm text-slate-500">Next update:</span>
+                      <span className="text-sm text-slate-500">Next update due:</span>
                       <input type="date" value={sel.nextUpdate || ''}
                         onChange={e => updateField(sel.id, 'nextUpdate', e.target.value)}
-                        className="text-sm bg-white border border-slate-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        className={`text-sm bg-white border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 ${sel.nextUpdate && new Date(sel.nextUpdate) < new Date() ? 'border-red-400 text-red-600' : 'border-slate-300'}`} />
+                      {sel.nextUpdate && new Date(sel.nextUpdate) < new Date() && (
+                        <span className="text-xs text-red-600 font-medium bg-red-50 px-2 py-0.5 rounded-full">Overdue</span>
+                      )}
                     </div>
-                    <p className="text-xs text-slate-400">Green &lt; 6w | Orange 6-12w | Red &gt; 12w</p>
+                    <p className="text-xs text-slate-400">Green &lt; 6w | Orange 6-12w | Red &gt; 12w or overdue date</p>
                   </div>
                   <button onClick={() => markUpdated(sel.id)}
                     className="flex items-center gap-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2.5 rounded-lg font-medium shadow-sm w-full md:w-auto justify-center">
