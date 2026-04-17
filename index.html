@@ -13,8 +13,6 @@ import {
 } from 'firebase/firestore';
 
 // --- Firebase Configuration ---
-// We use your provided config as the default. If deployed in an environment 
-// providing injected configs, it will use those.
 const defaultFirebaseConfig = {
   apiKey: "AIzaSyB60SW3dX1_gkrEFO57IVxhK6Lleqw8W1Y",
   authDomain: "conners-project-efd08.firebaseapp.com",
@@ -116,7 +114,7 @@ export default function App() {
   const [newClientNextUpdate, setNewClientNextUpdate] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  // 1. Initialize Authentication
+  // 1. Initialize Authentication — runs once on mount only
   useEffect(() => {
     const initAuth = async () => {
       try {
@@ -129,20 +127,21 @@ export default function App() {
         console.error("Auth error:", error);
       }
     };
+
     initAuth();
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (!currentUser) setIsLoading(false);
     });
+
     return () => unsubscribe();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 2. Fetch Data
   useEffect(() => {
     if (!user) return;
 
-    // Using a shared public path so your entire team can see the same clients
     const clientsRef = collection(db, 'artifacts', appId, 'public', 'data', 'clients');
     
     const unsubscribe = onSnapshot(clientsRef, (snapshot) => {
@@ -195,7 +194,7 @@ export default function App() {
   };
 
   const handleDeleteClient = async (id, e) => {
-    e.stopPropagation(); // Prevent opening the card
+    e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this client? This cannot be undone.")) {
       try {
         await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'clients', id));
@@ -206,11 +205,15 @@ export default function App() {
     }
   };
 
+  // FIX: Deep-copy checklist to avoid mutating React state directly
   const updateClientChecklist = async (clientId, updatedChecklist) => {
+    const safeChecklist = Object.fromEntries(
+      Object.entries(updatedChecklist).map(([cat, tasks]) => [cat, tasks.map(t => ({ ...t }))])
+    );
     try {
       await setDoc(
         doc(db, 'artifacts', appId, 'public', 'data', 'clients', clientId),
-        { checklist: updatedChecklist },
+        { checklist: safeChecklist },
         { merge: true }
       );
     } catch (err) {
@@ -353,7 +356,6 @@ export default function App() {
                 {clients.map(client => {
                   const status = getStatus(client.lastUpdated);
                   
-                  // Calculate overall progress
                   let totalTasks = 0;
                   let completedTasks = 0;
                   Object.values(client.checklist || {}).forEach(tasks => {
@@ -382,7 +384,6 @@ export default function App() {
                       </div>
 
                       <div className="mt-auto space-y-4">
-                        {/* Status Robot Indicator */}
                         <div className={`flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg ${status.bg} ${status.text}`}>
                           <div className={`w-3 h-3 rounded-full ${status.color} shadow-sm`} />
                           {status.label}
@@ -461,7 +462,7 @@ export default function App() {
                 <h3>Client Notes</h3>
               </div>
               <textarea
-                key={`notes-${selectedClient.id}`} // Ensures fresh mount when switching clients
+                key={`notes-${selectedClient.id}`}
                 defaultValue={selectedClient.notes || ''}
                 onBlur={(e) => handleUpdateField(selectedClient.id, 'notes', e.target.value)}
                 placeholder="Add ongoing notes, context, or key contacts here... (Saves automatically when you click away)"
@@ -494,12 +495,15 @@ export default function App() {
                             task.completed ? 'bg-slate-50 border-slate-200 opacity-75' : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
                           }`}
                         >
-                          {/* Checkbox */}
+                          {/* FIX: Use .map() to return a new array instead of mutating */}
                           <button 
                             onClick={() => {
-                              const newChecklist = { ...selectedClient.checklist };
-                              const t = newChecklist[category].find(x => x.id === task.id);
-                              t.completed = !t.completed;
+                              const newChecklist = {
+                                ...selectedClient.checklist,
+                                [category]: selectedClient.checklist[category].map(t =>
+                                  t.id === task.id ? { ...t, completed: !t.completed } : t
+                                )
+                              };
                               updateClientChecklist(selectedClient.id, newChecklist);
                             }}
                             className="mt-0.5 sm:mt-0 flex-shrink-0 focus:outline-none"
@@ -511,18 +515,20 @@ export default function App() {
                             )}
                           </button>
                           
-                          {/* Task Text */}
                           <span className={`flex-1 text-sm sm:text-base ${task.completed ? 'text-slate-500 line-through' : 'text-slate-800'}`}>
                             {task.text}
                           </span>
 
-                          {/* Priority Dropdown */}
+                          {/* FIX: Use .map() to return a new array instead of mutating */}
                           <select 
                             value={task.priority}
                             onChange={(e) => {
-                              const newChecklist = { ...selectedClient.checklist };
-                              const t = newChecklist[category].find(x => x.id === task.id);
-                              t.priority = e.target.value;
+                              const newChecklist = {
+                                ...selectedClient.checklist,
+                                [category]: selectedClient.checklist[category].map(t =>
+                                  t.id === task.id ? { ...t, priority: e.target.value } : t
+                                )
+                              };
                               updateClientChecklist(selectedClient.id, newChecklist);
                             }}
                             className={`ml-auto text-xs sm:text-sm border rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
